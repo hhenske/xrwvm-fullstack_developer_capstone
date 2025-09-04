@@ -13,6 +13,10 @@ img{
   margin-bottom: 1%;
 }
 
+.card-img-top {
+  height: 200px;
+}
+
 .row{
   display: flex;  
   flex: 1;
