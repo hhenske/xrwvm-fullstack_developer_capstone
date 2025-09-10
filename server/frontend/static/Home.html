@@ -8,7 +8,7 @@
 
 const logout = async (e) => {
 // Build logout URL and Make GET request to logout endpoint
-  let logout_url = window.location.origin+"/djangoapp/logout";
+  let logout_url = window.location.origin+"/djangoapp/logout/";
   const res = await fetch(logout_url, {
     method: "GET",
   });
