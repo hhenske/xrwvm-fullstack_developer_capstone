@@ -24,16 +24,24 @@ const Dealers = () => {
   };
 
   const get_dealers = async () => {
+    console.log("get_dealers CALLED");
     const res = await fetch("/djangoapp/get_dealerships/", { method: "GET" });
-    const retobj = await res.json();
-    if (retobj.status === 200) {
-      const all_dealers = Array.from(retobj.dealers);
-      const states = Array.from(new Set(all_dealers.map(d => d.state)));
-      setStates(states);
-      setDealersList(all_dealers);
+    console.log("Raw response:", res.status, res.statusText);   // 👈
+    const retobj = await res.json().catch(e => {
+        console.error("JSON parse error:", e);
+        return {};
+    });
+    console.log("Parsed JSON:", retobj);   // 👈
+    if (retobj.status === 200 && retobj.dealers) {
+        const all_dealers = Array.from(retobj.dealers);
+        const states = Array.from(new Set(all_dealers.map(d => d.state)));
+        setStates(states);
+        setDealersList(all_dealers);
+    } else {
+        console.warn("Unexpected response format:", retobj);
     }
-  };
-  
+    };
+    
   useEffect(() => {
     get_dealers();
   },[]);  
