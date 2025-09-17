@@ -8,29 +8,9 @@ const Dealers = () => {
   const [dealersList, setDealersList] = useState([]);
   const [states, setStates] = useState([]);
 
-  // ✅ Mock data for when backend is down
   useEffect(() => {
-    const mockDealers = [
-      {
-        id: 1,
-        full_name: "Test Dealer One",
-        city: "Chicago",
-        address: "123 Main St",
-        zip: "60601",
-        state: "IL",
-      },
-      {
-        id: 2,
-        full_name: "Test Dealer Two",
-        city: "Detroit",
-        address: "456 Elm St",
-        zip: "48201",
-        state: "MI",
-      },
-    ];
-    setDealersList(mockDealers);
-    setStates(["IL", "MI"]);
-  }, []);
+  filterDealers("All");
+}, []);
 
   // ✅ Define before use
   const filterDealers = async (state) => {
