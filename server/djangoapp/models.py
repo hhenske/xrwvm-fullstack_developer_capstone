@@ -24,11 +24,11 @@ class CarModel(models.Model):
     ]
     dealer_id = models.IntegerField()
     type = models.CharField(max_length=12, choices=CAR_TYPES, default="SUV")
-    year = models.DateField(default=2023,
-        validators=[
-            MaxValueValidator(2025),
-            MinValueValidator(2016)
-        ]) 
+    year = models.IntegerField(
+        default=2024,
+        validators=[MinValueValidator(2016), MaxValueValidator(2025)]
+    )
+       
 
     def __str__(self):
         return f"{self.car_make.name} {self.name} ({self.type})"
