@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.timezone import now
+# from django.utils.timezone import now
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -9,8 +9,9 @@ class CarMake(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
 
-    def __str__ (self):
+    def __str__(self):
         return self.name
+
 
 class CarModel(models.Model):
     car_make = models.ForeignKey('CarMake', on_delete=models.CASCADE)
@@ -28,10 +29,7 @@ class CarModel(models.Model):
         default=2024,
         validators=[MinValueValidator(2016), MaxValueValidator(2025)]
     )
-       
 
     def __str__(self):
         return f"{self.car_make.name} {self.name} ({self.type})"
-
-
 
