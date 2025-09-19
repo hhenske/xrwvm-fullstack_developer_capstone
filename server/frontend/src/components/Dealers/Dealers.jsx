@@ -9,8 +9,8 @@ const Dealers = () => {
   const [states, setStates] = useState([]);
 
   useEffect(() => {
-  filterDealers("All");
-}, []);
+    filterDealers("All");
+  }, []);
 
   // ✅ Define before use
   const filterDealers = async (state) => {
@@ -22,7 +22,14 @@ const Dealers = () => {
       const res = await fetch(url, { method: "GET" });
       const retobj = await res.json();
       if (retobj.status === 200 && retobj.dealers) {
-        setDealersList(Array.from(retobj.dealers));
+        const dealersArray = Array.from(retobj.dealers);
+        setDealersList(dealersArray);
+        
+        // Extract unique states only when fetching all dealers
+        if (state === "All") {
+          const uniqueStates = [...new Set(dealersArray.map(dealer => dealer.state))].sort();
+          setStates(uniqueStates);
+        }
       }
     } catch (err) {
       console.error("Filter failed:", err);
