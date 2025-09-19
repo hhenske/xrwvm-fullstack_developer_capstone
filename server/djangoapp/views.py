@@ -99,6 +99,7 @@ def get_cars(request):
 
 #Update the `get_dealerships` render list of dealerships all by default,
 def get_dealerships(request, state="All"):
+    print(f"DEBUG: get_dealerships called with state: {state}")
     if(state == "All"):
         endpoint = "/fetchDealers"
     else:
