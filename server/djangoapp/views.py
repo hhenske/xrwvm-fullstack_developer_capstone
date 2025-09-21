@@ -110,19 +110,58 @@ def get_dealerships(request, state="All"):
 
 
 # Create a `get_dealer_reviews` view to render the reviews of a dealer
+# def get_dealer_reviews(request, dealer_id): 
+
+#     if(dealer_id):
+#         endpoint = "/fetchReviews/dealer/"+str(dealer_id)
+#         reviews = get_request(endpoint)
+#         for review_detail in reviews: 
+#             response = analyze_review_sentiments(review_detail['review'])
+#             print(response)
+#             review_detail['sentiment'] = response['sentiment']
+#         return JsonResponse({"status":200,"reviews":reviews})
+#     else:
+#         return JsonResponse({"status":400,"message":"Bad Request"})
+
 def get_dealer_reviews(request, dealer_id): 
-
-    if(dealer_id):
-        endpoint = "/fetchReviews/dealer/"+str(dealer_id)
-        reviews = get_request(endpoint)
-        for review_detail in reviews: 
-            response = analyze_review_sentiments(review_detail['review'])
-            print(response)
-            review_detail['sentiment'] = response['sentiment']
-        return JsonResponse({"status":200,"reviews":reviews})
-    else:
+    if not dealer_id:
         return JsonResponse({"status":400,"message":"Bad Request"})
-
+    
+    endpoint = "/fetchReviews/dealer/" + str(dealer_id)
+    print(f"DEBUG: Fetching reviews with endpoint: {endpoint}")
+    
+    reviews = get_request(endpoint)
+    print(f"DEBUG: get_request returned: {reviews}")
+    
+    if reviews is None:
+        return JsonResponse({"status":500,"message":"Failed to fetch reviews"})
+        
+    # Handle case where no reviews exist (empty list)
+    if not reviews:
+        return JsonResponse({"status":200,"reviews":[]})
+    
+    # Ensure reviews is a list
+    if not isinstance(reviews, list):
+        return JsonResponse({"status":500,"message":"Invalid reviews data format"})
+    
+    # Add sentiment analysis to each review
+    for review_detail in reviews: 
+        try:
+            if 'review' in review_detail and review_detail['review']:
+                response = analyze_review_sentiments(review_detail['review'])
+                print(f"DEBUG: Sentiment response: {response}")
+                
+                if response and 'sentiment' in response:
+                    review_detail['sentiment'] = response['sentiment']
+                else:
+                    review_detail['sentiment'] = 'neutral'  # fallback
+            else:
+                review_detail['sentiment'] = 'neutral'
+        except Exception as e:
+            print(f"DEBUG: Sentiment analysis failed for review: {e}")
+            review_detail['sentiment'] = 'neutral'  # fallback on error
+            
+    return JsonResponse({"status":200,"reviews":reviews})
 
 # Create a `get_dealer_details` view to render the dealer details
 def get_dealer_details(request, dealer_id): 
