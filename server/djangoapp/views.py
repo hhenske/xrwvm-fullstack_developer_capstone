@@ -174,14 +174,21 @@ def get_dealer_details(request, dealer_id):
 
 
 # Create a `add_review` view to submit a review
+# Create a `add_review` view to submit a review
+@csrf_exempt  # Add this line
 def add_review(request): 
-    if(request.user.is_anonymous == False): 
-        data = json.loads(request.body)
+    if request.method == 'POST':
         try:
+            data = json.loads(request.body)
+            print(f"DEBUG: Received review data: {data}")
+            
             response = post_review(data)
+            print(f"DEBUG: post_review response: {response}")
+            
             return JsonResponse({"status": 200})
-        except:
+        except Exception as e:
+            print(f"DEBUG: Error in add_review: {e}")
             return JsonResponse({"status": 401, 
-            "message": "Error in posting review"})
+                "message": "Error in posting review"})
     else:
-        return JsonResponse({"status":403, "message": "Unauthorized"})
+        return JsonResponse({"status": 405, "message": "Method not allowed"})
