@@ -72,9 +72,11 @@ def register_user(request):
     if not username_exist:
         # Create user in auth_user table
         user = User.objects.create_user(
-            username = username, first_name = first_name,
-            last_name = last_name,
-            password=password, email=email
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
+            email=email
         ) 
         # Login the user and redirect to list page
         login(request, user)
@@ -93,8 +95,10 @@ def get_cars(request):
     car_models = CarModel.objects.select_related('car_make')
     cars = []
     for car_model in car_models:
-        cars.append({"CarModel": car_model.name,
-            "CarMake": car_model.car_make.name})
+        cars.append({
+            "CarModel": car_model.name,
+            "CarMake": car_model.car_make.name
+            })
     return JsonResponse({"CarModels": cars})
 
 
@@ -106,7 +110,7 @@ def get_dealerships(request, state="All"):
         endpoint = "/fetchDealers/"+state
     dealerships = get_request(endpoint)
     print("DEBUG get_request returned: ", dealerships)
-    return JsonResponse({"status":200, "dealers": dealerships})
+    return JsonResponse({"status": 200, "dealers": dealerships})
 
 
 # Create a `get_dealer_reviews` view to render the reviews of a dealer
@@ -134,8 +138,10 @@ def get_dealer_reviews(request, dealer_id):
     print(f"DEBUG: get_request returned: {reviews}")
 
     if reviews is None:
-        return JsonResponse({"status": 500,
-            "message": "Failed to fetch reviews"})
+        return JsonResponse({
+            "status": 500,
+            "message": "Failed to fetch reviews"
+            })
 
     # Handle case where no reviews exist (empty list)
     if not reviews:
@@ -143,8 +149,10 @@ def get_dealer_reviews(request, dealer_id):
 
     # Ensure reviews is a list
     if not isinstance(reviews, list):
-        return JsonResponse({"status": 500,
-            "message": "Invalid reviews data format"})
+        return JsonResponse({
+            "status": 500,
+            "message": "Invalid reviews data format"
+            })
 
     # Add sentiment analysis to each review
     for review_detail in reviews:
@@ -195,5 +203,3 @@ def add_review(request):
                 "message": "Error in posting review"})
     else:
         return JsonResponse({"status": 405, "message": "Method not allowed"})
-
-    
