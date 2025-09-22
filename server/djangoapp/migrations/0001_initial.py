@@ -62,6 +62,6 @@ class Migration(migrations.Migration):
                 to='djangoapp.carmake'
                     )
                 ),
-            ],
+                ),
         ),
     ]
