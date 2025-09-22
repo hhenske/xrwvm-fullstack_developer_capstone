@@ -98,17 +98,17 @@ def initiate():
         },
       {
         "name": "Cerato",
-        "type": "Sedan", 
+        "type": "Sedan",
         "year": 2023,
         "car_make": car_make_instances[3],
-        "dealer_id":2
+        "dealer_id": 2
         },
       {
         "name": "Corolla",
         "type": "Sedan",
         "year": 2023,
         "car_make": car_make_instances[4],
-        "dealer_id":2},
+        "dealer_id": 2},
       {
         "name": "Camry",
         "type": "Sedan",
@@ -120,8 +120,8 @@ def initiate():
         "name": "Kluger",
         "type": "SUV", "year": 2023,
         "car_make": car_make_instances[4],
-        "dealer_id":2},
-        # Add more CarModel instances as needed
+        "dealer_id": 2
+        },
     ]
 
     for data in car_model_data:

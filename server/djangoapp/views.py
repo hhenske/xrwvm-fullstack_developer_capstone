@@ -77,7 +77,7 @@ def register_user(request):
             last_name=last_name,
             password=password,
             email=email
-        ) 
+        )
         # Login the user and redirect to list page
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
@@ -192,14 +192,16 @@ def add_review(request):
         try:
             data = json.loads(request.body)
             print(f"DEBUG: Received review data: {data}")
-            
+
             response = post_review(data)
             print(f"DEBUG: post_review response: {response}")
-            
+
             return JsonResponse({"status": 200})
         except Exception as e:
             print(f"DEBUG: Error in add_review: {e}")
-            return JsonResponse({"status": 401,
-                "message": "Error in posting review"})
+            return JsonResponse({
+                "status": 401,
+                "message": "Error in posting review"
+                })
     else:
         return JsonResponse({"status": 405, "message": "Method not allowed"})

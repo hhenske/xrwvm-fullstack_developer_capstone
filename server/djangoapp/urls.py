@@ -37,7 +37,7 @@ urlpatterns = [
     path('get_dealers/', views.get_dealerships, name='get_dealers'),
     path(
         'get_dealers/<str:state>',
-        views.get_dealerships, 
+        views.get_dealerships,
         name='get_dealers_by_state'
         ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
